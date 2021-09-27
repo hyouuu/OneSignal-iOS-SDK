@@ -28,14 +28,13 @@
 #import <OneSignalCore/OneSignalCore.h>
 #import "OneSignalNotificationServiceExtensionHandler.h"
 #import "OneSignalExtensionBadgeHandler.h"
-#import "OneSignalHelper.h"
-#import "OSInfluenceDataDefines.h"
-#import "OneSignalTrackFirebaseAnalytics.h"
-#import "OSSubscription.h"
-#import "OneSignalInternal.h"
-#import "OneSignalReceiveReceiptsController.h"
-#import "OSSessionManager.h"
-#import "OSMigrationController.h"
+//#import "OSInfluenceDataDefines.h"
+//#import "OSSubscription.h"
+//#import "OneSignalInternal.h"
+//#import "OneSignalReceiveReceiptsController.h"
+//#import "OSSessionManager.h"
+//#import "OSMigrationController.h"
+#import "OneSignalAttachmentHandler.h"
 
 @implementation OneSignalNotificationServiceExtensionHandler
 
@@ -49,18 +48,18 @@
 
 + (UNMutableNotificationContent*)didReceiveNotificationExtensionRequest:(UNNotificationRequest*)request             withMutableNotificationContent:(UNMutableNotificationContent*)replacementContent
                 withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler {
-    [OneSignal onesignal_Log:ONE_S_LL_VERBOSE message:@"NSE request received"];
+    //[OneSignalLog onesignal_Log:ONE_S_LL_VERBOSE message:@"NSE request received"];
     
     if (!replacementContent)
         replacementContent = [request.content mutableCopy];
     
-    let notification = [OSNotification parseWithApns:request.content.userInfo];
+    OSNotification *notification = [OSNotification parseWithApns:request.content.userInfo];
 
     // Handle badge count
     [OneSignalExtensionBadgeHandler handleBadgeCountWithNotificationRequest:request withNotification:notification withMutableNotificationContent:replacementContent];
     
     // Track receieved
-    [OneSignalTrackFirebaseAnalytics trackReceivedEvent:notification];
+    //[OneSignalTrackFirebaseAnalytics trackReceivedEvent:notification];
 
     // Action Buttons
     [self addActionButtonsToExtentionRequest:request
@@ -68,20 +67,20 @@
               withMutableNotificationContent:replacementContent];
     
     // Get and check the received notification id
-    let receivedNotificationId = notification.notificationId;
+    NSString *receivedNotificationId = notification.notificationId;
     
     // Trigger the notification to be shown with the replacementContent
     if (contentHandler) {
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
         [self onNotificationReceived:receivedNotificationId withBlockingTask:semaphore];
         // Download Media Attachments after kicking off the confirmed delivery task
-        [OneSignalHelper addAttachments:notification toNotificationContent:replacementContent];
+        [OneSignalAttachmentHelper addAttachments:notification toNotificationContent:replacementContent];
         contentHandler(replacementContent);
         dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, MAX_NSE_LIFETIME_SECOUNDS * NSEC_PER_SEC));
     } else {
         [self onNotificationReceived:receivedNotificationId withBlockingTask:nil];
         // Download Media Attachments
-        [OneSignalHelper addAttachments:notification toNotificationContent:replacementContent];
+        [OneSignalAttachmentHelper addAttachments:notification toNotificationContent:replacementContent];
     }
 
     return replacementContent;
@@ -109,17 +108,17 @@
     if (request.content.categoryIdentifier && ![request.content.categoryIdentifier isEqualToString:@""])
         return;
     
-    [OneSignalHelper addActionButtons:notification toNotificationContent:replacementContent];
+    [OneSignalAttachmentHelper addActionButtons:notification toNotificationContent:replacementContent];
 }
 
 + (void)onNotificationReceived:(NSString *)receivedNotificationId withBlockingTask:(dispatch_semaphore_t)semaphore {
     if (receivedNotificationId && ![receivedNotificationId isEqualToString:@""]) {
         
         // If update was made without app being initialized/launched before -> migrate
-        [[OSMigrationController new] migrate];
-        [OneSignal onesignal_Log:ONE_S_LL_VERBOSE message:[NSString stringWithFormat:@"NSE request received, sessionManager: %@", [OneSignal sessionManager]]];
-        // Save received notification id
-        [[OneSignal sessionManager] onNotificationReceived:receivedNotificationId];
+//        [[OSMigrationController new] migrate];
+//        [OneSignalLog onesignal_Log:ONE_S_LL_VERBOSE message:[NSString stringWithFormat:@"NSE request received, sessionManager: %@", [OneSignal sessionManager]]];
+//        // Save received notification id
+//        [[OneSignal sessionManager] onNotificationReceived:receivedNotificationId];
         
         // Track confirmed delivery
         let sharedUserDefaults = OneSignalUserDefaults.initShared;
@@ -127,18 +126,18 @@
         let appId = [sharedUserDefaults getSavedStringForKey:OSUD_APP_ID defaultValue:nil];
         // Randomize send of confirmed deliveries to lessen traffic for high recipient notifications
         int randomDelay = semaphore != nil ? arc4random_uniform(MAX_CONF_DELIVERY_DELAY) : 0;
-        [OneSignal onesignal_Log:ONE_S_LL_VERBOSE message:[NSString stringWithFormat:@"OneSignal onNotificationReceived sendReceiveReceipt with delay: %i", randomDelay]];
-        [OneSignal.receiveReceiptsController sendReceiveReceiptWithPlayerId:playerId notificationId:receivedNotificationId appId:appId delay:randomDelay successBlock:^(NSDictionary *result) {
-            [OneSignal onesignal_Log:ONE_S_LL_VERBOSE message:[NSString stringWithFormat:@"OneSignal onNotificationReceived sendReceiveReceipt Success for playerId: %@ result: %@", playerId, result]];
-            if (semaphore) {
-                dispatch_semaphore_signal(semaphore);
-            }
-        } failureBlock:^(NSError *error) {
-            [OneSignal onesignal_Log:ONE_S_LL_VERBOSE message:[NSString stringWithFormat:@"OneSignal onNotificationReceived sendReceiveReceipt Failed for playerId: %@ error:%@", playerId, error.localizedDescription]];
-            if (semaphore) {
-                dispatch_semaphore_signal(semaphore);
-            }
-        }];
+//        [OneSignalLog onesignal_Log:ONE_S_LL_VERBOSE message:[NSString stringWithFormat:@"OneSignal onNotificationReceived sendReceiveReceipt with delay: %i", randomDelay]];
+//        [OneSignal.receiveReceiptsController sendReceiveReceiptWithPlayerId:playerId notificationId:receivedNotificationId appId:appId delay:randomDelay successBlock:^(NSDictionary *result) {
+//            [OneSignal onesignal_Log:ONE_S_LL_VERBOSE message:[NSString stringWithFormat:@"OneSignal onNotificationReceived sendReceiveReceipt Success for playerId: %@ result: %@", playerId, result]];
+//            if (semaphore) {
+//                dispatch_semaphore_signal(semaphore);
+//            }
+//        } failureBlock:^(NSError *error) {
+//            [OneSignal onesignal_Log:ONE_S_LL_VERBOSE message:[NSString stringWithFormat:@"OneSignal onNotificationReceived sendReceiveReceipt Failed for playerId: %@ error:%@", playerId, error.localizedDescription]];
+//            if (semaphore) {
+//                dispatch_semaphore_signal(semaphore);
+//            }
+//        }];
    }
 }
 
