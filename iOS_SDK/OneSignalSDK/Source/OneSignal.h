@@ -87,17 +87,6 @@
 
 @end
 
-@interface OSInAppMessageOutcome : NSObject
-
-@property (strong, nonatomic, nonnull) NSString *name;
-@property (strong, nonatomic, nonnull) NSNumber *weight;
-@property (nonatomic) BOOL unique;
-
-// Convert the class into a NSDictionary
-- (NSDictionary *_Nonnull)jsonRepresentation;
-
-@end
-
 @interface OSInAppMessageTag : NSObject
 
 @property (strong, nonatomic, nullable) NSDictionary *tagsToAdd;
