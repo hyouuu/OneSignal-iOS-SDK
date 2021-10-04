@@ -125,7 +125,6 @@ NSString* const kOSSettingsKeyProvidesAppNotificationSettings = @"kOSSettingsKey
 
 @implementation OneSignal
 
-NSString* const ONESIGNAL_VERSION = @"030900";
 static NSString* mSDKType = @"native";
 static BOOL coldStartFromTapOnNotification = NO;
 static BOOL shouldDelaySubscriptionUpdate = false;
@@ -1776,7 +1775,7 @@ static BOOL _registerUserSuccessful = false;
         return;
 
     [_outcomeEventsController clearOutcomes];
-    [_sessionManager restartSessionIfNeeded:_appEntryState];
+    [[OSSessionManager sharedSessionManager] restartSessionIfNeeded:_appEntryState];
 
     [OneSignalTrackFirebaseAnalytics trackInfluenceOpenEvent];
     
