@@ -1770,6 +1770,7 @@ static BOOL _registerUserSuccessful = false;
         return;
 
     [_outcomeEventsController clearOutcomes];
+    [OSSessionManager sharedSessionManager].delegate = self;
     [[OSSessionManager sharedSessionManager] restartSessionIfNeeded:_appEntryState];
 
     [OneSignalTrackFirebaseAnalytics trackInfluenceOpenEvent];
