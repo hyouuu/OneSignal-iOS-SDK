@@ -693,6 +693,8 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
  */
 + (void)init {
     [[OSMigrationController new] migrate];
+    // using classes as delegates is not best practice. We should consider using a shared instance of a class instead
+    [OSSessionManager sharedSessionManager].delegate = (id<SessionStatusDelegate>)self;
     if ([self requiresUserPrivacyConsent]) {
         [OneSignalLog onesignalLog:ONE_S_LL_VERBOSE message:@"Delayed initialization of the OneSignal SDK until the user provides privacy consent using the consentGranted() method"];
         delayedInitializationForPrivacyConsent = true;
@@ -1762,7 +1764,6 @@ static BOOL _registerUserSuccessful = false;
         return;
 
     [_outcomeEventsController clearOutcomes];
-    [OSSessionManager sharedSessionManager].delegate = self;
     [[OSSessionManager sharedSessionManager] restartSessionIfNeeded:_appEntryState];
 
     [OneSignalTrackFirebaseAnalytics trackInfluenceOpenEvent];
