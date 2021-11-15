@@ -49,34 +49,6 @@
 #pragma clang diagnostic ignored "-Wstrict-prototypes"
 #pragma clang diagnostic ignored "-Wnullability-completeness"
 
-///* The action type associated to an OSNotificationAction object */
-//typedef NS_ENUM(NSUInteger, OSNotificationActionType)  {
-//    OSNotificationActionTypeOpened,
-//    OSNotificationActionTypeActionTaken
-//};
-//
-//@interface OSNotificationAction : NSObject
-//
-///* The type of the notification action */
-//@property(readonly)OSNotificationActionType type;
-//
-///* The ID associated with the button tapped. NULL when the actionType is NotificationTapped */
-//@property(readonly, nullable)NSString* actionId;
-//
-//@end
-//
-//@interface OSNotificationOpenedResult : NSObject
-//
-//@property(readonly, nonnull)OSNotification* notification;
-//@property(readonly, nonnull)OSNotificationAction *action;
-//
-///* Convert object into an NSString that can be convertible into a custom Dictionary / JSON Object */
-//- (NSString* _Nonnull)stringify;
-//
-//// Convert the class into a NSDictionary
-//- (NSDictionary *_Nonnull)jsonRepresentation;
-//
-//@end;
 
 @interface OSInAppMessage : NSObject
 
@@ -137,41 +109,6 @@
 - (void)onWillDismissInAppMessage:(OSInAppMessage *)message;
 - (void)onDidDismissInAppMessage:(OSInAppMessage *)message;
 @end
-
-///* OneSignal Influence Types */
-//typedef NS_ENUM(NSUInteger, OSInfluenceType) {
-//    DIRECT,
-//    INDIRECT,
-//    UNATTRIBUTED,
-//    DISABLED
-//};
-///* OneSignal Influence Channels */
-//typedef NS_ENUM(NSUInteger, OSInfluenceChannel) {
-//    IN_APP_MESSAGE,
-//    NOTIFICATION,
-//};
-
-//@interface OSOutcomeEvent : NSObject
-//
-//// Session enum (DIRECT, INDIRECT, UNATTRIBUTED, or DISABLED) to determine code route and request params
-//@property (nonatomic) OSInfluenceType session;
-//
-//// Notification ids for the current session
-//@property (strong, nonatomic, nullable) NSArray *notificationIds;
-//
-//// Id or name of the event
-//@property (strong, nonatomic, nonnull) NSString *name;
-//
-//// Time of the event occurring
-//@property (strong, nonatomic, nonnull) NSNumber *timestamp;
-//
-//// A weight to attach to the outcome name
-//@property (strong, nonatomic, nonnull) NSDecimalNumber *weight;
-//
-//// Convert the object into a NSDictionary
-//- (NSDictionary * _Nonnull)jsonRepresentation;
-//
-//@end
 
 typedef NS_ENUM(NSInteger, OSNotificationPermission) {
     // The user has not yet made a choice regarding whether your app can show notifications.
