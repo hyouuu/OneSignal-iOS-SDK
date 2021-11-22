@@ -846,7 +846,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 // (also known as Direct to History).
 // This behavior is determined by the OneSignal Parameters request
 + (void)checkProvisionalAuthorizationStatus {
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
         return;
     
     BOOL usesProvisional = [OneSignalUserDefaults.initStandard getSavedBoolForKey:OSUD_USES_PROVISIONAL_PUSH_AUTHORIZATION defaultValue:false];
@@ -868,17 +868,6 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
         [OneSignal onesignalLog:ONE_S_LL_WARN message:@"registerForProvisionalAuthorization is only available in iOS 12+."];
 }
 
-+ (BOOL)shouldLogMissingPrivacyConsentErrorWithMethodName:(NSString *)methodName {
-    if ([self requiresUserPrivacyConsent]) {
-        if (methodName) {
-            [OneSignal onesignalLog:ONE_S_LL_WARN message:[NSString stringWithFormat:@"Your application has called %@ before the user granted privacy permission. Please call `consentGranted(bool)` in order to provide user privacy consent", methodName]];
-        }
-        return true;
-    }
-    
-    return false;
-}
-
 + (void)setRequiresUserPrivacyConsent:(BOOL)required {
     let remoteParamController = [self getRemoteParamController];
 
@@ -895,20 +884,11 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 }
 
 + (BOOL)requiresUserPrivacyConsent {
-    let remoteParamController = [self getRemoteParamController];
-    let shouldRequireUserConsent = [remoteParamController isPrivacyConsentRequired];
-    // if the plist key does not exist default to true
-    // the plist value specifies whether GDPR privacy consent is required for this app
-    // if required and consent has not been previously granted, return false
-    let requiresConsent = [[[NSBundle mainBundle] objectForInfoDictionaryKey:ONESIGNAL_REQUIRE_PRIVACY_CONSENT] boolValue] ?: false;
-    if (requiresConsent || shouldRequireUserConsent)
-        return ![OneSignalUserDefaults.initStandard getSavedBoolForKey:GDPR_CONSENT_GRANTED defaultValue:false];
-    
-    return false;
+    return [OSPrivacyConsentController requiresUserPrivacyConsent];
 }
 
 + (void)consentGranted:(BOOL)granted {
-    [OneSignalUserDefaults.initStandard saveBoolForKey:GDPR_CONSENT_GRANTED withValue:granted];
+    [OSPrivacyConsentController consentGranted:granted];
     
     if (!granted || !delayedInitializationForPrivacyConsent || _delayedInitParameters == nil)
         return;
@@ -1079,7 +1059,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 + (void)promptForPushNotificationsWithUserResponse:(OSUserResponseBlock)block {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"promptForPushNotificationsWithUserResponse:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"promptForPushNotificationsWithUserResponse:"])
         return;
     
     [OneSignal onesignalLog:ONE_S_LL_VERBOSE message:[NSString stringWithFormat:@"registerForPushNotifications Called:waitingForApnsResponse: %d", waitingForApnsResponse]];
@@ -1094,7 +1074,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 + (void)registerForPushNotifications {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"registerForPushNotifications:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"registerForPushNotifications:"])
         return;
     
     [self promptForPushNotificationsWithUserResponse:nil];
@@ -1160,7 +1140,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 + (void)sendTagsWithJsonString:(NSString*)jsonString {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"sendTagsWithJsonString:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"sendTagsWithJsonString:"])
         return;
     
     NSError* jsonError;
@@ -1178,7 +1158,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 + (void)sendTags:(NSDictionary*)keyValuePair {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"sendTags:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"sendTags:"])
         return;
     
     [self sendTags:keyValuePair onSuccess:nil onFailure:nil];
@@ -1187,7 +1167,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 + (void)sendTags:(NSDictionary*)keyValuePair onSuccess:(OSResultSuccessBlock)successBlock onFailure:(OSFailureBlock)failureBlock {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"sendTags:onSuccess:onFailure:"]) {
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"sendTags:onSuccess:onFailure:"]) {
         if (failureBlock) {
             NSError *error = [NSError errorWithDomain:@"com.onesignal.tags" code:0 userInfo:@{@"error" : @"Your application has called sendTags:onSuccess:onFailure: before the user granted privacy permission. Please call `consentGranted(bool)` in order to provide user privacy consent"}];
             failureBlock(error);
@@ -1255,7 +1235,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 + (void)sendTagsToServer {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
         return;
     
     if (!self.playerTags.tagsToSend)
@@ -1273,7 +1253,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 + (void)sendTag:(NSString*)key value:(NSString*)value {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"sendTag:value:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"sendTag:value:"])
         return;
     
     [self sendTag:key value:value onSuccess:nil onFailure:nil];
@@ -1282,7 +1262,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 + (void)sendTag:(NSString*)key value:(NSString*)value onSuccess:(OSResultSuccessBlock)successBlock onFailure:(OSFailureBlock)failureBlock {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"sendTag:value:onSuccess:onFailure:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"sendTag:value:onSuccess:onFailure:"])
         return;
     
     [self sendTags:[NSDictionary dictionaryWithObjectsAndKeys: value, key, nil] onSuccess:successBlock onFailure:failureBlock];
@@ -1291,7 +1271,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 + (void)getTags:(OSResultSuccessBlock)successBlock onFailure:(OSFailureBlock)failureBlock {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"getTags:onFailure:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"getTags:onFailure:"])
         return;
     
     if (!self.currentSubscriptionState.userId) {
@@ -1310,7 +1290,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 + (void)getTags:(OSResultSuccessBlock)successBlock {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"getTags:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"getTags:"])
         return;
     
     [self getTags:successBlock onFailure:nil];
@@ -1320,7 +1300,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 + (void)deleteTag:(NSString*)key onSuccess:(OSResultSuccessBlock)successBlock onFailure:(OSFailureBlock)failureBlock {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"deleteTag:onSuccess:onFailure:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"deleteTag:onSuccess:onFailure:"])
         return;
     
     [self deleteTags:@[key] onSuccess:successBlock onFailure:failureBlock];
@@ -1329,7 +1309,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 + (void)deleteTag:(NSString*)key {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"deleteTag:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"deleteTag:"])
         return;
     
     [self deleteTags:@[key] onSuccess:nil onFailure:nil];
@@ -1338,7 +1318,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 + (void)deleteTags:(NSArray*)keys {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"deleteTags:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"deleteTags:"])
         return;
     
     [self deleteTags:keys onSuccess:nil onFailure:nil];
@@ -1347,7 +1327,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 + (void)deleteTagsWithJsonString:(NSString*)jsonString {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"deleteTagsWithJsonString:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"deleteTagsWithJsonString:"])
         return;
     
     NSError* jsonError;
@@ -1377,7 +1357,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 + (void)postNotification:(NSDictionary*)jsonData {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"postNotification:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"postNotification:"])
         return;
     
     [self postNotification:jsonData onSuccess:nil onFailure:nil];
@@ -1386,7 +1366,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 + (void)postNotification:(NSDictionary*)jsonData onSuccess:(OSResultSuccessBlock)successBlock onFailure:(OSFailureBlock)failureBlock {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"postNotification:onSuccess:onFailure:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"postNotification:onSuccess:onFailure:"])
         return;
     
     NSMutableDictionary *json = [jsonData mutableCopy];
@@ -1415,7 +1395,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 + (void)postNotificationWithJsonString:(NSString*)jsonString onSuccess:(OSResultSuccessBlock)successBlock onFailure:(OSFailureBlock)failureBlock {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"postNotificationWithJsonString:onSuccess:onFailure:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"postNotificationWithJsonString:onSuccess:onFailure:"])
         return;
     
     NSError* jsonError;
@@ -1469,7 +1449,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 
 + (void)disablePush:(BOOL)disable {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"disablePush:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"disablePush:"])
         return;
 
     NSString* value = nil;
@@ -1514,7 +1494,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 
 + (void)promptLocationFallbackToSettings:(BOOL)fallback completionHandler:(void (^)(PromptActionResult result))completionHandler {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"promptLocation"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"promptLocation"])
         return;
     
     [OneSignalLocation getLocation:true fallbackToSettings:fallback withCompletionHandler:completionHandler];
@@ -1543,7 +1523,7 @@ static OneSignalOutcomeEventsController *_outcomeEventsController;
 
 + (void)updateDeviceToken:(NSString*)deviceToken {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"updateDeviceToken:onSuccess:onFailure:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"updateDeviceToken:onSuccess:onFailure:"])
         return;
     
     [OneSignal onesignalLog:ONE_S_LL_VERBOSE message:@"updateDeviceToken:onSuccess:onFailure:"];
@@ -1600,7 +1580,7 @@ static BOOL _registerUserSuccessful = false;
 
 + (BOOL)shouldRegisterNow {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
         return false;
     
     // Don't make a 2nd on_session if have in inflight one
@@ -1640,7 +1620,7 @@ static BOOL _registerUserSuccessful = false;
 
 + (void)registerUser {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
         return;
 
     if ([self shouldRegisterUserAfterDelay]) {
@@ -1758,7 +1738,7 @@ static BOOL _registerUserSuccessful = false;
     _registerUserSuccessful = false;
 
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
         return;
     
     // Make sure we only call create or on_session once per open of the app.
@@ -1902,7 +1882,7 @@ static BOOL _registerUserSuccessful = false;
 + (BOOL)sendNotificationTypesUpdate {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
         return false;
     
     // User changed notification settings for the app.
@@ -1943,7 +1923,7 @@ static BOOL _registerUserSuccessful = false;
 
 + (void)sendPurchases:(NSArray*)purchases {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
         return;
     
     [OneSignal.stateSynchronizer sendPurchases:purchases appId:self.appId];
@@ -1963,7 +1943,7 @@ static NSString *_lastnonActiveMessageId;
 // isActive is not always true for when the application is on foreground, we need differentiation
 // between foreground and isActive
 + (void)notificationReceived:(NSDictionary*)messageDict wasOpened:(BOOL)opened {
-    if ([OneSignal shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
         return;
     
     if (!appId)
@@ -2036,7 +2016,7 @@ static NSString *_lastnonActiveMessageId;
                       actionType:(OSNotificationActionType)actionType {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"handleNotificationOpened:actionType:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"handleNotificationOpened:actionType:"])
         return;
 
     OSNotification *notification = [OSNotification parseWithApns:messageDict];
@@ -2093,7 +2073,7 @@ static NSString *_lastnonActiveMessageId;
 + (void)submitNotificationOpened:(NSString*)messageId {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
         return;
     
     let standardUserDefaults = OneSignalUserDefaults.initStandard;
@@ -2196,7 +2176,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (void)didRegisterForRemoteNotifications:(UIApplication *)app
                               deviceToken:(NSData *)inDeviceToken {
-    if ([OneSignal shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
         return;
 
     let parsedDeviceToken = [NSString hexStringFromData:inDeviceToken];
@@ -2256,7 +2236,7 @@ static NSString *_lastnonActiveMessageId;
 
 // iOS 9 - Entry point when OneSignal action button notification is displayed or opened.
 + (void)processLocalActionBasedNotification:(UILocalNotification*) notification identifier:(NSString*)identifier {
-    if ([OneSignal shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:nil])
         return;
     
     if (!notification.userInfo)
@@ -2322,7 +2302,7 @@ static NSString *_lastnonActiveMessageId;
 + (void)setEmail:(NSString * _Nonnull)email {
 
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"setEmail:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"setEmail:"])
         return;
 
     [self setEmail:email withSuccess:nil withFailure:nil];
@@ -2331,7 +2311,7 @@ static NSString *_lastnonActiveMessageId;
 + (void)setEmail:(NSString * _Nonnull)email withSuccess:(OSEmailSuccessBlock _Nullable)successBlock withFailure:(OSEmailFailureBlock _Nullable)failureBlock {
 
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"setEmail:withSuccess:withFailure:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"setEmail:withSuccess:withFailure:"])
         return;
 
     [self setEmail:email withEmailAuthHashToken:nil withSuccess:successBlock withFailure:failureBlock];
@@ -2340,7 +2320,7 @@ static NSString *_lastnonActiveMessageId;
 + (void)setEmail:(NSString * _Nonnull)email withEmailAuthHashToken:(NSString * _Nullable)hashToken {
 
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"setEmail:withEmailAuthHashToken:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"setEmail:withEmailAuthHashToken:"])
         return;
 
     [self setEmail:email withEmailAuthHashToken:hashToken withSuccess:nil withFailure:nil];
@@ -2349,7 +2329,7 @@ static NSString *_lastnonActiveMessageId;
 + (void)setEmail:(NSString * _Nonnull)email withEmailAuthHashToken:(NSString * _Nullable)hashToken withSuccess:(OSEmailSuccessBlock _Nullable)successBlock withFailure:(OSEmailFailureBlock _Nullable)failureBlock {
 
     // Return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"setEmail:withEmailAuthHashToken:withSuccess:withFailure:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"setEmail:withEmailAuthHashToken:withSuccess:withFailure:"])
         return;
     
     // Some clients/wrappers may send NSNull instead of nil as the auth token
@@ -2422,7 +2402,7 @@ static NSString *_lastnonActiveMessageId;
 + (void)logoutEmail {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"logoutEmail"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"logoutEmail"])
         return;
     
     [self logoutEmailWithSuccess:nil withFailure:nil];
@@ -2431,7 +2411,7 @@ static NSString *_lastnonActiveMessageId;
 + (void)logoutEmailWithSuccess:(OSEmailSuccessBlock _Nullable)successBlock withFailure:(OSEmailFailureBlock _Nullable)failureBlock {
     
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"logoutEmailWithSuccess:withFailure:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"logoutEmailWithSuccess:withFailure:"])
         return;
     
     if (!self.currentEmailSubscriptionState.emailUserId) {
@@ -2479,7 +2459,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (void)setSMSNumber:(NSString *)smsNumber {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"setSMSNumber:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"setSMSNumber:"])
         return;
 
     [self setSMSNumber:smsNumber withSMSAuthHashToken:nil withSuccess:nil withFailure:nil];
@@ -2487,7 +2467,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (void)setSMSNumber:(NSString *)smsNumber withSuccess:(OSSMSSuccessBlock)successBlock withFailure:(OSSMSFailureBlock)failureBlock {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"setSMSNumber:withSuccess:withFailure:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"setSMSNumber:withSuccess:withFailure:"])
         return;
 
     [self setSMSNumber:smsNumber withSMSAuthHashToken:nil withSuccess:successBlock withFailure:failureBlock];
@@ -2495,7 +2475,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (void)setSMSNumber:(NSString *)smsNumber withSMSAuthHashToken:(NSString *)hashToken {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"setSMSNumber:withSMSAuthHashToken:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"setSMSNumber:withSMSAuthHashToken:"])
         return;
 
     [self setSMSNumber:smsNumber withSMSAuthHashToken:hashToken withSuccess:nil withFailure:nil];
@@ -2503,7 +2483,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (void)setSMSNumber:(NSString *)smsNumber withSMSAuthHashToken:(NSString *)hashToken withSuccess:(OSSMSSuccessBlock)successBlock withFailure:(OSSMSFailureBlock)failureBlock {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"setSMSNumber:withSMSAuthHashToken:withSuccess:withFailure:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"setSMSNumber:withSMSAuthHashToken:withSuccess:withFailure:"])
         return;
     
     // Some clients/wrappers may send NSNull instead of nil as the auth token
@@ -2551,7 +2531,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (void)logoutSMSNumber {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"logoutSMSNumber"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"logoutSMSNumber"])
         return;
     
     [self logoutSMSNumberWithSuccess:nil withFailure:nil];
@@ -2559,7 +2539,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (void)logoutSMSNumberWithSuccess:(OSSMSSuccessBlock)successBlock withFailure:(OSSMSFailureBlock)failureBlock {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"logoutSMSNumberWithSuccess:withFailure:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"logoutSMSNumberWithSuccess:withFailure:"])
         return;
     
     if (!self.currentSMSSubscriptionState.smsUserId) {
@@ -2580,7 +2560,7 @@ static NSString *_lastnonActiveMessageId;
 + (void)addTrigger:(NSString *)key withValue:(id)value {
 
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"addTrigger:withValue:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"addTrigger:withValue:"])
         return;
 
     if (!key) {
@@ -2593,7 +2573,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (void)addTriggers:(NSDictionary<NSString *, id> *)triggers {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"addTriggers:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"addTriggers:"])
         return;
 
     [OSMessagingController.sharedInstance addTriggers:triggers];
@@ -2601,7 +2581,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (void)removeTriggerForKey:(NSString *)key {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"removeTriggerForKey:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"removeTriggerForKey:"])
         return;
 
     if (!key) {
@@ -2614,7 +2594,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (void)removeTriggersForKeys:(NSArray<NSString *> *)keys {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"removeTriggerForKey:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"removeTriggerForKey:"])
         return;
 
     [OSMessagingController.sharedInstance removeTriggersForKeys:keys];
@@ -2622,7 +2602,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (NSDictionary<NSString *, id> *)getTriggers {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"getTriggers"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"getTriggers"])
         return @{};
 
     return [OSMessagingController.sharedInstance getTriggers];
@@ -2630,7 +2610,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (id)getTriggerValueForKey:(NSString *)key {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"getTriggerValueForKey:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"getTriggerValueForKey:"])
         return nil;
 
     return [OSMessagingController.sharedInstance getTriggerValueForKey:key];
@@ -2638,7 +2618,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (void)setLanguage:(NSString * _Nonnull)language {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"setLanguage"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"setLanguage"])
         return;
     
     let languageProviderAppDefined = [LanguageProviderAppDefined new];
@@ -2652,7 +2632,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (void)setLanguage:(NSString * _Nonnull)language withSuccess:(OSUpdateLanguageSuccessBlock _Nullable)successBlock withFailure:(OSUpdateLanguageFailureBlock _Nullable)failureBlock {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"setLanguage"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"setLanguage"])
         return;
     
     //Can't send Language if there exists not LanguageContext or language
@@ -2685,7 +2665,7 @@ static NSString *_lastnonActiveMessageId;
 + (void)setExternalUserId:(NSString * _Nonnull)externalId {
 
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"setExternalUserId:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"setExternalUserId:"])
         return;
     
     [self setExternalUserId:externalId withSuccess:nil withFailure:nil];
@@ -2693,7 +2673,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (void)setExternalUserId:(NSString * _Nonnull)externalId withSuccess:(OSUpdateExternalUserIdSuccessBlock _Nullable)successBlock withFailure:(OSUpdateExternalUserIdFailureBlock _Nullable)failureBlock {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"setExternalUserId:withSuccess:withFailure:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"setExternalUserId:withSuccess:withFailure:"])
         return;
 
     [self setExternalUserId:externalId withExternalIdAuthHashToken:nil withSuccess:successBlock withFailure:failureBlock];
@@ -2701,7 +2681,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (void)setExternalUserId:(NSString *)externalId withExternalIdAuthHashToken:(NSString *)hashToken withSuccess:(OSUpdateExternalUserIdSuccessBlock _Nullable)successBlock withFailure:(OSUpdateExternalUserIdFailureBlock _Nullable)failureBlock {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"setExternalUserId:withExternalIdAuthHashToken:withSuccess:withFailure:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"setExternalUserId:withExternalIdAuthHashToken:withSuccess:withFailure:"])
         return;
 
     // Can't set the external id if init is not done or the app id or user id has not ben set yet
@@ -2733,7 +2713,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (void)removeExternalUserId {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"removeExternalUserId"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"removeExternalUserId"])
         return;
 
     [self setExternalUserId:@""];
@@ -2741,7 +2721,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (void)removeExternalUserId:(OSUpdateExternalUserIdSuccessBlock _Nullable)successBlock withFailure:(OSUpdateExternalUserIdFailureBlock _Nullable)failureBlock {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"removeExternalUserId:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"removeExternalUserId:"])
         return;
 
     [self setExternalUserId:@"" withSuccess:successBlock withFailure:failureBlock];
@@ -2785,7 +2765,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (void)sendOutcome:(NSString * _Nonnull)name onSuccess:(OSSendOutcomeSuccess _Nullable)success {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"sendOutcome:onSuccess:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"sendOutcome:onSuccess:"])
         return;
 
     if (!_outcomeEventsController) {
@@ -2805,7 +2785,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (void)sendUniqueOutcome:(NSString * _Nonnull)name onSuccess:(OSSendOutcomeSuccess _Nullable)success {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"sendUniqueOutcome:onSuccess:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"sendUniqueOutcome:onSuccess:"])
         return;
 
     if (!_outcomeEventsController) {
@@ -2825,7 +2805,7 @@ static NSString *_lastnonActiveMessageId;
 
 + (void)sendOutcomeWithValue:(NSString * _Nonnull)name value:(NSNumber * _Nonnull)value onSuccess:(OSSendOutcomeSuccess _Nullable)success {
     // return if the user has not granted privacy permissions
-    if ([self shouldLogMissingPrivacyConsentErrorWithMethodName:@"sendOutcomeWithValue:value:onSuccess:"])
+    if ([OSPrivacyConsentController shouldLogMissingPrivacyConsentErrorWithMethodName:@"sendOutcomeWithValue:value:onSuccess:"])
         return;
 
     if (!_outcomeEventsController) {
