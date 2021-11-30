@@ -4,53 +4,29 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>Frameworks/OneSignalCore.framework/Info.plist</key>
-		<data>
-		DklGduBXEuhdLOE2tRsqhZ5oVEA=
-		</data>
-		<key>Frameworks/OneSignalCore.framework/OneSignalCore</key>
-		<data>
-		tKd3kI1+9ZndFxutKu3TJ/3LmDI=
-		</data>
-		<key>Frameworks/OneSignalCore.framework/_CodeSignature/CodeResources</key>
-		<data>
-		Xacs1Np/tCUsJ/OhRi7lxCrtz/0=
-		</data>
-		<key>Frameworks/OneSignalOutcomes.framework/Frameworks/OneSignalCore.framework/Info.plist</key>
-		<data>
-		DklGduBXEuhdLOE2tRsqhZ5oVEA=
-		</data>
-		<key>Frameworks/OneSignalOutcomes.framework/Frameworks/OneSignalCore.framework/OneSignalCore</key>
-		<data>
-		3FyXisNTgWDZ6MFOUOOdmn9NGG8=
-		</data>
-		<key>Frameworks/OneSignalOutcomes.framework/Frameworks/OneSignalCore.framework/_CodeSignature/CodeResources</key>
-		<data>
-		Xacs1Np/tCUsJ/OhRi7lxCrtz/0=
-		</data>
-		<key>Frameworks/OneSignalOutcomes.framework/Info.plist</key>
-		<data>
-		Qlg6fScrmYAD0REazSzApFCN2+w=
-		</data>
-		<key>Frameworks/OneSignalOutcomes.framework/OneSignalOutcomes</key>
-		<data>
-		6R6RkZRkcwDb3yLOo2vp07VPejo=
-		</data>
-		<key>Frameworks/OneSignalOutcomes.framework/_CodeSignature/CodeResources</key>
-		<data>
-		MdFSETa7Id1VmQ5P0E2iAhDUHpw=
-		</data>
 		<key>Headers/OneSignalAttachmentHandler.h</key>
 		<data>
 		E7Xxznht/fBtvU1bxMjofLfitBg=
 		</data>
 		<key>Headers/OneSignalExtension.h</key>
 		<data>
-		/JBrwgsErEYEMKCHUU/qPj8lUb8=
+		IzN22sUfSrCZjRoDOTBeLShrJDw=
+		</data>
+		<key>Headers/OneSignalExtensionBadgeHandler.h</key>
+		<data>
+		9FedGtPt9rCXhNagzqNjl5h9MtI=
+		</data>
+		<key>Headers/OneSignalNotificationServiceExtensionHandler.h</key>
+		<data>
+		uDNyK1ot8TvsWZLHUvpZseAhbc8=
+		</data>
+		<key>Headers/OneSignalReceiveReceiptsController.h</key>
+		<data>
+		rB2oKywqGzoh8BBPu+i4924UtE4=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		o1DCeOc8f0YKBkAJDfbYdpt7PIM=
+		M0tiOhYsDD0GuqLLsa8YpjkW/ZU=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -59,105 +35,6 @@
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>Frameworks/OneSignalCore.framework/Info.plist</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			DklGduBXEuhdLOE2tRsqhZ5oVEA=
-			</data>
-			<key>hash2</key>
-			<data>
-			Wkm0H0VmfMCzcU1vqQ+BPK3CDXw9KRTpAH9UiwoH3bE=
-			</data>
-		</dict>
-		<key>Frameworks/OneSignalCore.framework/OneSignalCore</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			tKd3kI1+9ZndFxutKu3TJ/3LmDI=
-			</data>
-			<key>hash2</key>
-			<data>
-			vTvPjB4jZNLI9UKhZu19bTxizJ7tX6Ftg6caWaLopb8=
-			</data>
-		</dict>
-		<key>Frameworks/OneSignalCore.framework/_CodeSignature/CodeResources</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			Xacs1Np/tCUsJ/OhRi7lxCrtz/0=
-			</data>
-			<key>hash2</key>
-			<data>
-			SOMcv78+N3O5194pqSexkDxDx0kPaPEXYi4/DXWjp+Q=
-			</data>
-		</dict>
-		<key>Frameworks/OneSignalOutcomes.framework/Frameworks/OneSignalCore.framework/Info.plist</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			DklGduBXEuhdLOE2tRsqhZ5oVEA=
-			</data>
-			<key>hash2</key>
-			<data>
-			Wkm0H0VmfMCzcU1vqQ+BPK3CDXw9KRTpAH9UiwoH3bE=
-			</data>
-		</dict>
-		<key>Frameworks/OneSignalOutcomes.framework/Frameworks/OneSignalCore.framework/OneSignalCore</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			3FyXisNTgWDZ6MFOUOOdmn9NGG8=
-			</data>
-			<key>hash2</key>
-			<data>
-			0T/crlJbsG8rbZKbhzsZz4b6ayzy7yKbLMAVhES/i+k=
-			</data>
-		</dict>
-		<key>Frameworks/OneSignalOutcomes.framework/Frameworks/OneSignalCore.framework/_CodeSignature/CodeResources</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			Xacs1Np/tCUsJ/OhRi7lxCrtz/0=
-			</data>
-			<key>hash2</key>
-			<data>
-			SOMcv78+N3O5194pqSexkDxDx0kPaPEXYi4/DXWjp+Q=
-			</data>
-		</dict>
-		<key>Frameworks/OneSignalOutcomes.framework/Info.plist</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			Qlg6fScrmYAD0REazSzApFCN2+w=
-			</data>
-			<key>hash2</key>
-			<data>
-			LdSq7OhotHI1L807HQedXAIsPx+WqvmZmsXzf4n/OP8=
-			</data>
-		</dict>
-		<key>Frameworks/OneSignalOutcomes.framework/OneSignalOutcomes</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			6R6RkZRkcwDb3yLOo2vp07VPejo=
-			</data>
-			<key>hash2</key>
-			<data>
-			JMYwlItF9PxEIfVX4g5aIaLV9eQnNUVo7L/55YjxpUg=
-			</data>
-		</dict>
-		<key>Frameworks/OneSignalOutcomes.framework/_CodeSignature/CodeResources</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			MdFSETa7Id1VmQ5P0E2iAhDUHpw=
-			</data>
-			<key>hash2</key>
-			<data>
-			eO81434qPUfbIaKnJKrNiWI5WFCdAryM04yGh5tNpnY=
-			</data>
-		</dict>
 		<key>Headers/OneSignalAttachmentHandler.h</key>
 		<dict>
 			<key>hash</key>
@@ -173,11 +50,44 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			/JBrwgsErEYEMKCHUU/qPj8lUb8=
+			IzN22sUfSrCZjRoDOTBeLShrJDw=
 			</data>
 			<key>hash2</key>
 			<data>
-			fA/d6S2ps8KQ52q+BxXr7VwTsQk9Y5ciw5KAbL7S/Ss=
+			ivCkB/vatp943YZ4hkre/RZyoJwwSfml9BwrTRM4BbM=
+			</data>
+		</dict>
+		<key>Headers/OneSignalExtensionBadgeHandler.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			9FedGtPt9rCXhNagzqNjl5h9MtI=
+			</data>
+			<key>hash2</key>
+			<data>
+			/CxutAe5JEon++77YvKoCU1k0Z+E0T0xhoxaRmZgCY4=
+			</data>
+		</dict>
+		<key>Headers/OneSignalNotificationServiceExtensionHandler.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			uDNyK1ot8TvsWZLHUvpZseAhbc8=
+			</data>
+			<key>hash2</key>
+			<data>
+			Lv7C1iLbC+fw3VPs5jaBF+DXeg7K4SmMvl1q9n8KDCI=
+			</data>
+		</dict>
+		<key>Headers/OneSignalReceiveReceiptsController.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			rB2oKywqGzoh8BBPu+i4924UtE4=
+			</data>
+			<key>hash2</key>
+			<data>
+			zFt5+Ycq1CA/brx6hkQu0LGXtv96FVSeDlJsTsbkRL8=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

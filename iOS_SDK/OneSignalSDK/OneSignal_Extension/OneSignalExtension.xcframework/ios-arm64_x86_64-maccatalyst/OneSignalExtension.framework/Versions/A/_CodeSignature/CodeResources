@@ -11,24 +11,6 @@
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>Frameworks/OneSignalCore.framework</key>
-		<dict>
-			<key>cdhash</key>
-			<data>
-			vfHYNi5Wzn+3kzCI6nRd1x6S2Js=
-			</data>
-			<key>requirement</key>
-			<string>identifier "com.onesignal.OneSignalCore" and anchor apple generic and certificate leaf[subject.CN] = "Apple Development: Elliot Mawby (339QVSPY79)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
-		</dict>
-		<key>Frameworks/OneSignalOutcomes.framework</key>
-		<dict>
-			<key>cdhash</key>
-			<data>
-			feG6nizhuJQd6QVh9Qgffl1Tu+Y=
-			</data>
-			<key>requirement</key>
-			<string>identifier "com.onesignal.OneSignalOutcomes" and anchor apple generic and certificate leaf[subject.CN] = "Apple Development: Elliot Mawby (339QVSPY79)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
-		</dict>
 		<key>Headers/OneSignalAttachmentHandler.h</key>
 		<dict>
 			<key>hash2</key>
@@ -40,7 +22,28 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			fA/d6S2ps8KQ52q+BxXr7VwTsQk9Y5ciw5KAbL7S/Ss=
+			ivCkB/vatp943YZ4hkre/RZyoJwwSfml9BwrTRM4BbM=
+			</data>
+		</dict>
+		<key>Headers/OneSignalExtensionBadgeHandler.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			/CxutAe5JEon++77YvKoCU1k0Z+E0T0xhoxaRmZgCY4=
+			</data>
+		</dict>
+		<key>Headers/OneSignalNotificationServiceExtensionHandler.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Lv7C1iLbC+fw3VPs5jaBF+DXeg7K4SmMvl1q9n8KDCI=
+			</data>
+		</dict>
+		<key>Headers/OneSignalReceiveReceiptsController.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			zFt5+Ycq1CA/brx6hkQu0LGXtv96FVSeDlJsTsbkRL8=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

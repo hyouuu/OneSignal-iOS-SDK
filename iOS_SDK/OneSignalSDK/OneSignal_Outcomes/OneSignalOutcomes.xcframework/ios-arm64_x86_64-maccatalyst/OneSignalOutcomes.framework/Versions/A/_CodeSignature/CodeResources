@@ -11,15 +11,6 @@
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>Frameworks/OneSignalCore.framework</key>
-		<dict>
-			<key>cdhash</key>
-			<data>
-			vfHYNi5Wzn+3kzCI6nRd1x6S2Js=
-			</data>
-			<key>requirement</key>
-			<string>identifier "com.onesignal.OneSignalCore" and anchor apple generic and certificate leaf[subject.CN] = "Apple Development: Elliot Mawby (339QVSPY79)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
-		</dict>
 		<key>Headers/OSCachedUniqueOutcome.h</key>
 		<dict>
 			<key>hash2</key>
@@ -66,14 +57,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			UyYTLli+34PIKuHjk77nQbotg2GUAfc7vrRx6+spTiI=
+			knk1+sZ0qZOmSkq4A3Ej5R1dtUJ+36O8oS7eBPIwo/s=
 			</data>
 		</dict>
 		<key>Headers/OSOutcomeEvent.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Lkrwe+r+RbnFdAWKYuLDkduoW/VE2ZVM8dlt+voLcko=
+			rVPhLl5rwxzr31JH7YanfVtL/m/VrwPQ+bZRKekaFEg=
 			</data>
 		</dict>
 		<key>Headers/OSOutcomeEventParams.h</key>
@@ -87,7 +78,21 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Nn78LhxU0pHwTGLY6tEa+wVtZIR3WSk+pKeo1iR9vA8=
+			N6az4wqlL4oB+ugOXVU1xgJMCuABHcDKVi5XAV6e/GU=
+			</data>
+		</dict>
+		<key>Headers/OSOutcomeEventsFactory.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			B9zLkhrLlC2+UdJh/XfEHYstpiw8n4y2rH/kdw/ob5A=
+			</data>
+		</dict>
+		<key>Headers/OSOutcomeEventsRepository.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			REkrumsrQPze19CbYkIMpr/Xb0y8y6i4Ytyk9J30qMY=
 			</data>
 		</dict>
 		<key>Headers/OSOutcomeSource.h</key>
@@ -108,21 +113,28 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			EwSd2qlhNWK+8v81L+kIS89/VTecdftUl0FrX9trQBc=
+			PqGFeWJieWBjFVlo9hW6K3zw3EROosJ9GekCpVrw87U=
 			</data>
 		</dict>
 		<key>Headers/OSTrackerFactory.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			PSAK0TfNeu5jT2YrG0y2Zv0iFzZjLz8SbJ3c5ax+2hc=
+			e38XG+rnmKSpSyDmrN4/Mc4+zLBKKWQ6+gexB9VHFKg=
+			</data>
+		</dict>
+		<key>Headers/OneSignalOutcomeEventsController.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			2LLCLqre2Yz61h0Ir/t5whNSGEa/8+9QKJx8WZ/15CQ=
 			</data>
 		</dict>
 		<key>Headers/OneSignalOutcomes.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			du7WryTmsBoZiViYkIdEulDQ8UJS0fQivVe+e//2OuY=
+			GFLvc7yAjjvzpcTn4DOvrAd+0+BacOygATaFNR719s0=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

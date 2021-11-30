@@ -4,18 +4,6 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>Frameworks/OneSignalCore.framework/Info.plist</key>
-		<data>
-		vJvEVEp2enjRn2BQQlriVmKVyc4=
-		</data>
-		<key>Frameworks/OneSignalCore.framework/OneSignalCore</key>
-		<data>
-		HYV6OH5/VIgVPZhEtjKCvkIfD5Y=
-		</data>
-		<key>Frameworks/OneSignalCore.framework/_CodeSignature/CodeResources</key>
-		<data>
-		TyLcpiSYJJmEL1k/o57c3kURzT4=
-		</data>
 		<key>Headers/OSCachedUniqueOutcome.h</key>
 		<data>
 		QQP7NOxbPFL98LkulmK/wbUMQvU=
@@ -42,11 +30,11 @@
 		</data>
 		<key>Headers/OSInfluenceDataRepository.h</key>
 		<data>
-		9KF9JeBz++w2pmWoHDFAFI8kIuw=
+		zEIQwZXZL2ANP3t0dT4rkZ8FCpA=
 		</data>
 		<key>Headers/OSOutcomeEvent.h</key>
 		<data>
-		TxokHTcMGDDP2ZOdN3bPw+r38qs=
+		VeZHB/WJ6f64j2by4zH06IS1uOc=
 		</data>
 		<key>Headers/OSOutcomeEventParams.h</key>
 		<data>
@@ -54,7 +42,15 @@
 		</data>
 		<key>Headers/OSOutcomeEventsCache.h</key>
 		<data>
-		dhuYL8nSGVZXbX96TaiTy50z9Ls=
+		xJtU7JLpDgHjBUbaiE8SnnXGCiQ=
+		</data>
+		<key>Headers/OSOutcomeEventsFactory.h</key>
+		<data>
+		b6vJ4AsamqL5CARZVfsSVEQNG68=
+		</data>
+		<key>Headers/OSOutcomeEventsRepository.h</key>
+		<data>
+		o/1Eb25yqP71kTECIELL9hYSsm8=
 		</data>
 		<key>Headers/OSOutcomeSource.h</key>
 		<data>
@@ -66,15 +62,19 @@
 		</data>
 		<key>Headers/OSSessionManager.h</key>
 		<data>
-		f/cF2/qToB2fDOp7njBQXffsjxI=
+		b2/LI60ct+svisyN/9N4P5hk3zc=
 		</data>
 		<key>Headers/OSTrackerFactory.h</key>
 		<data>
-		VjCn1EydNgmYF/rKurwNuqD0vfs=
+		4sUyvIDmirrXETvMsEpZ29aR1pI=
+		</data>
+		<key>Headers/OneSignalOutcomeEventsController.h</key>
+		<data>
+		sD4f/g7VkNo0X2aZKE5/DVsacj4=
 		</data>
 		<key>Headers/OneSignalOutcomes.h</key>
 		<data>
-		1PqXT1sMPzfy2w3R9VAR5g4Q0Oo=
+		sW/MH6o2HgmQVEWrbtmDRuL4+dA=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -87,39 +87,6 @@
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>Frameworks/OneSignalCore.framework/Info.plist</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			vJvEVEp2enjRn2BQQlriVmKVyc4=
-			</data>
-			<key>hash2</key>
-			<data>
-			Fymqv98eMkO97MHGn9WRJEfIg6XnnyDjWyp7KqTUR2k=
-			</data>
-		</dict>
-		<key>Frameworks/OneSignalCore.framework/OneSignalCore</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			HYV6OH5/VIgVPZhEtjKCvkIfD5Y=
-			</data>
-			<key>hash2</key>
-			<data>
-			CbrGed9DAmUlDSj8iU1eNCVSZ2WBrmaXy5paI+Ep8WQ=
-			</data>
-		</dict>
-		<key>Frameworks/OneSignalCore.framework/_CodeSignature/CodeResources</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			TyLcpiSYJJmEL1k/o57c3kURzT4=
-			</data>
-			<key>hash2</key>
-			<data>
-			y+mzQJMNZPQik2ImhSa42aAdKxwV6JZi9E2mw9+jIJ8=
-			</data>
-		</dict>
 		<key>Headers/OSCachedUniqueOutcome.h</key>
 		<dict>
 			<key>hash</key>
@@ -190,22 +157,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			9KF9JeBz++w2pmWoHDFAFI8kIuw=
+			zEIQwZXZL2ANP3t0dT4rkZ8FCpA=
 			</data>
 			<key>hash2</key>
 			<data>
-			UyYTLli+34PIKuHjk77nQbotg2GUAfc7vrRx6+spTiI=
+			knk1+sZ0qZOmSkq4A3Ej5R1dtUJ+36O8oS7eBPIwo/s=
 			</data>
 		</dict>
 		<key>Headers/OSOutcomeEvent.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			TxokHTcMGDDP2ZOdN3bPw+r38qs=
+			VeZHB/WJ6f64j2by4zH06IS1uOc=
 			</data>
 			<key>hash2</key>
 			<data>
-			Lkrwe+r+RbnFdAWKYuLDkduoW/VE2ZVM8dlt+voLcko=
+			rVPhLl5rwxzr31JH7YanfVtL/m/VrwPQ+bZRKekaFEg=
 			</data>
 		</dict>
 		<key>Headers/OSOutcomeEventParams.h</key>
@@ -223,11 +190,33 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			dhuYL8nSGVZXbX96TaiTy50z9Ls=
+			xJtU7JLpDgHjBUbaiE8SnnXGCiQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			Nn78LhxU0pHwTGLY6tEa+wVtZIR3WSk+pKeo1iR9vA8=
+			N6az4wqlL4oB+ugOXVU1xgJMCuABHcDKVi5XAV6e/GU=
+			</data>
+		</dict>
+		<key>Headers/OSOutcomeEventsFactory.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			b6vJ4AsamqL5CARZVfsSVEQNG68=
+			</data>
+			<key>hash2</key>
+			<data>
+			B9zLkhrLlC2+UdJh/XfEHYstpiw8n4y2rH/kdw/ob5A=
+			</data>
+		</dict>
+		<key>Headers/OSOutcomeEventsRepository.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			o/1Eb25yqP71kTECIELL9hYSsm8=
+			</data>
+			<key>hash2</key>
+			<data>
+			REkrumsrQPze19CbYkIMpr/Xb0y8y6i4Ytyk9J30qMY=
 			</data>
 		</dict>
 		<key>Headers/OSOutcomeSource.h</key>
@@ -256,33 +245,44 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			f/cF2/qToB2fDOp7njBQXffsjxI=
+			b2/LI60ct+svisyN/9N4P5hk3zc=
 			</data>
 			<key>hash2</key>
 			<data>
-			EwSd2qlhNWK+8v81L+kIS89/VTecdftUl0FrX9trQBc=
+			PqGFeWJieWBjFVlo9hW6K3zw3EROosJ9GekCpVrw87U=
 			</data>
 		</dict>
 		<key>Headers/OSTrackerFactory.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			VjCn1EydNgmYF/rKurwNuqD0vfs=
+			4sUyvIDmirrXETvMsEpZ29aR1pI=
 			</data>
 			<key>hash2</key>
 			<data>
-			PSAK0TfNeu5jT2YrG0y2Zv0iFzZjLz8SbJ3c5ax+2hc=
+			e38XG+rnmKSpSyDmrN4/Mc4+zLBKKWQ6+gexB9VHFKg=
+			</data>
+		</dict>
+		<key>Headers/OneSignalOutcomeEventsController.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			sD4f/g7VkNo0X2aZKE5/DVsacj4=
+			</data>
+			<key>hash2</key>
+			<data>
+			2LLCLqre2Yz61h0Ir/t5whNSGEa/8+9QKJx8WZ/15CQ=
 			</data>
 		</dict>
 		<key>Headers/OneSignalOutcomes.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			1PqXT1sMPzfy2w3R9VAR5g4Q0Oo=
+			sW/MH6o2HgmQVEWrbtmDRuL4+dA=
 			</data>
 			<key>hash2</key>
 			<data>
-			du7WryTmsBoZiViYkIdEulDQ8UJS0fQivVe+e//2OuY=
+			GFLvc7yAjjvzpcTn4DOvrAd+0+BacOygATaFNR719s0=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
